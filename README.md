@@ -85,10 +85,21 @@ Sin esto la app no se rompe: queda el punto en la tab Hoy cuando el día está s
 npx web-push generate-vapid-keys
 ```
 
-Las claves van a `.env.local` y a Vercel, junto con `SUPABASE_SERVICE_ROLE_KEY`
-(Project Settings → API, sólo del lado del servidor) y un `CRON_SECRET` cualquiera.
-`vercel.json` ya deja programado el cron que corre cada hora y avisa sólo a quien tenga
-esa hora configurada y el día sin cargar.
+Las claves van a `.env.local` y a Vercel, junto con `SUPABASE_SECRET_KEY`
+(Settings → API Keys, sólo del lado del servidor) y un `CRON_SECRET` cualquiera.
+
+`vercel.json` deja programado un cron **diario a las 00:00 UTC, o sea 21:00 en Buenos
+Aires**, que es la hora por defecto del recordatorio. El plan Hobby de Vercel no admite
+crons más seguidos que uno por día: con esa restricción, sólo se dispara el aviso de quien
+tenga configurada esa hora.
+
+Para que funcione cualquier hora hay dos caminos:
+
+- Pasar el proyecto a Vercel Pro y volver el schedule a `0 * * * *` (cada hora).
+- Dejar el plan gratis y usar un programador externo (cron-job.org es gratis) que pegue
+  cada hora a `https://<tu-dominio>/api/cron/recordatorios` con el header
+  `Authorization: Bearer <CRON_SECRET>`. La ruta ya compara la hora de Buenos Aires contra
+  la de cada persona, así que avisa sólo a quien corresponde.
 
 ## Cómo está armado
 

@@ -1,0 +1,32 @@
+{
+  "name": "diario-fit",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p ${PORT:-3001}",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "check": "tsc lib/achievements.ts lib/challenges.ts lib/config.ts lib/dates.ts lib/score.ts lib/series.ts lib/streaks.ts lib/types.ts --outDir .tmp-check/out --module commonjs --target es2022 --moduleResolution node --esModuleInterop --skipLibCheck && node scripts/check-reglas.cjs"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.58.0",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
+    "next": "^15.5.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "recharts": "^3.10.1",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.0",
+    "@types/node": "^22.10.0",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@types/web-push": "^3.6.4",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.7.0"
+  }
+}

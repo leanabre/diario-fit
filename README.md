@@ -30,31 +30,17 @@ cp .env.local.example .env.local
 La *Secret key* no va acá: es la de "puede todo" y sólo la usa el cron en producción.
 Sin credenciales la app no rompe, muestra una pantalla que dice qué falta.
 
-**4. Habilitar el ingreso por mail.**
+**4. Configurar el ingreso.** Authentication → **Sign In / Providers** → proveedor
+**Email**: desactivar **Confirm email**.
 
-- Authentication → URL Configuration → *Site URL*: `http://localhost:3000`
-- *Redirect URLs*: agregar `http://localhost:3000/auth/callback` (y la URL de Vercel
-  cuando despliegues).
-**Sobre el código de 6 dígitos.** La app acepta entrar con el link o con un código. El
-código sólo llega si la plantilla del mail lo incluye, y Supabase **no deja editar las
-plantillas sin SMTP propio**. Con el mail por defecto llega sólo el link, que alcanza
-para la compu.
+Se entra con mail y contraseña, sin ningún mail de por medio. Es a propósito: el link
+mágico del spec obligaba a salir a Safari, y en iPhone la app agregada a la pantalla de
+inicio guarda la sesión aparte de la de Safari, así que quedabas afuera. Sumado a que el
+correo por defecto de Supabase manda sólo 2 mails por hora, para dos personas la
+contraseña es menos trámite.
 
-Vale la pena configurar SMTP propio (Brevo, Gmail con contraseña de aplicación, Mailgun)
-cuando pase cualquiera de estas dos:
-
-- La app instalada en el iPhone te aparece deslogueada después de entrar por el link.
-  Pasa porque iOS guarda la sesión de Safari aparte de la de la app en la pantalla de
-  inicio. El código lo resuelve porque no salís de la app.
-- Dejan de llegar los mails. El servicio por defecto de Supabase manda **2 mails por
-  hora** y no es para producción.
-
-Con SMTP propio, la plantilla **Magic link or OTP** se vuelve editable y hay que agregarle:
-
-```html
-<p>Tu código: <strong>{{ .Token }}</strong></p>
-<p>O entrá con este <a href="{{ .ConfirmationURL }}">link</a>.</p>
-```
+No hay recuperación por mail. Si alguien la olvida, se cambia desde Supabase →
+Authentication → Users → los tres puntos de esa persona → Reset password.
 
 **5. Levantar.**
 
@@ -128,6 +114,8 @@ incremental: por eso editar un día viejo corrige todo solo.
 
 ## Diferencias con el spec
 
+- El ingreso es con **mail y contraseña**, no con el magic link que pedía el spec. La
+  razón está arriba, en el paso 4.
 - El spec dice **18 logros** y después lista **19**. Están implementados los 19 de la lista.
 - El desafío semanal se resuelve **al abrir la pantalla Nosotros** después de que terminó
   la semana, no a las 23:59 del domingo. Sin un cron dedicado es lo más cerca de "solo"

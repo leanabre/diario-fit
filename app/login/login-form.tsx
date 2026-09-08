@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { APP_NAME } from "@/lib/config";
 import { supabaseBrowser } from "@/lib/supabase/client";
+import { authErrorMessage } from "@/lib/auth-errors";
 
 export function LoginForm() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export function LoginForm() {
 
     if (error) {
       setStatus("idle");
-      setMessage(error.message);
+      setMessage(authErrorMessage(error.message));
       return;
     }
     setStatus("sent");
@@ -47,7 +48,7 @@ export function LoginForm() {
 
     if (error) {
       setStatus("sent");
-      setMessage("Ese código no anda. Fijate que sea el último que llegó.");
+      setMessage(authErrorMessage(error.message));
       return;
     }
 

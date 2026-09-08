@@ -1,26 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  /* Superficie: índigo profundo. La app se abre de noche. */
-  --color-bg: #151329;
-  --color-surface: #1e1b3a;
-  --color-line: #2e2a52;
-  --color-text: #edeaff;
-  --color-text-dim: #9a94c4;
+  /* Superficies: índigo más profundo que antes, para que todo lo que va encima
+     gane contraste. Tres niveles en lugar de dos, así las tarjetas se despegan. */
+  --color-bg: #0f0e1c;
+  --color-surface: #191730;
+  --color-raised: #232041;
+  --color-line: #302c52;
+  --color-text: #f2efff;
+  --color-text-dim: #9d97c2;
 
-  /* Alimentación: un solo ámbar que gana luz del 1 al 5. */
-  --color-food-1: #4a3b2a;
-  --color-food-2: #7a5a2e;
-  --color-food-3: #a8802f;
-  --color-food-4: #d4a62a;
-  --color-food-5: #ffd24a;
+  /* Alimentación: un solo ámbar que gana luz del 1 al 5. Los dos primeros pasos
+     ya no son marrón barroso: se leen contra el fondo sin ensuciar. */
+  --color-food-1: #7c5c3c;
+  --color-food-2: #a3763a;
+  --color-food-3: #c99632;
+  --color-food-4: #e8b72f;
+  --color-food-5: #ffd75e;
 
-  /* Entrenamiento: categóricos fríos. */
-  --color-yoga: #3ddc97;
-  --color-ludus: #8b6bff;
-  --color-gym: #4a9bff;
-  --color-running: #2fd8d2;
-  --color-rest: #3a3660;
+  /* Entrenamiento: familia fría, todas a una luminosidad parecida para que
+     ninguna grite por encima de las otras al lado del ámbar. */
+  --color-yoga: #4ade9c;
+  --color-ludus: #a78bfa;
+  --color-gym: #60a5fa;
+  --color-running: #22d3ee;
+  --color-rest: #4b4770;
+
+  --color-accent: #8b6bff;
 
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;
@@ -39,8 +45,8 @@
   --text-mini: 0.8125rem;
   --text-mini--line-height: 1.35;
 
-  --radius-cell: 0.5rem;
-  --radius-card: 1.125rem;
+  --radius-cell: 0.625rem;
+  --radius-card: 1.25rem;
 }
 
 :root {
@@ -62,20 +68,47 @@ body {
 
 /* La app es táctil y de una mano: nada de selección accidental ni flash gris. */
 button,
-[role="button"] {
+[role="button"],
+a {
   -webkit-tap-highlight-color: transparent;
-  user-select: none;
   touch-action: manipulation;
+}
+
+button,
+[role="button"] {
+  user-select: none;
+}
+
+/*
+  El estado seleccionado no se anima: antes tardaba 150 ms en llegar al color y
+  se sentía como si la app pensara. Lo único que se mueve es el hundido del
+  toque, que es respuesta directa y va en 90 ms.
+*/
+.tap {
+  transition: transform 90ms ease-out;
+}
+
+.tap:active {
+  transform: scale(0.96);
 }
 
 .font-display {
   font-family: var(--font-display);
   font-variation-settings: "wdth" 100, "opsz" 24;
+  letter-spacing: -0.015em;
 }
 
 /* Números tabulares: el 11 y el 12 no tienen que bailar. */
 .tnum {
   font-variant-numeric: tabular-nums;
+}
+
+/* Tarjeta: el borde solo no alcanzaba para despegarla del fondo. */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.03) inset;
 }
 
 .safe-top {
@@ -86,19 +119,19 @@ button,
   padding-bottom: max(env(safe-area-inset-bottom), 0.5rem);
 }
 
-/* El único momento de motion orquestado de Fase 1: la celda que se enciende. */
+/* Primero de los dos momentos de motion orquestado: la celda que se enciende. */
 @keyframes cell-ignite {
   0% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 210, 74, 0);
+    box-shadow: 0 0 0 0 rgb(255 215 94 / 0);
   }
   40% {
-    transform: scale(1.18);
-    box-shadow: 0 0 0 6px rgba(255, 210, 74, 0.22);
+    transform: scale(1.16);
+    box-shadow: 0 0 0 6px rgb(255 215 94 / 0.2);
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(255, 210, 74, 0);
+    box-shadow: 0 0 0 0 rgb(255 215 94 / 0);
   }
 }
 
@@ -109,16 +142,16 @@ button,
 @keyframes fade-up {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(8px) scale(0.96);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
 .fade-up {
-  animation: fade-up 180ms ease-out;
+  animation: fade-up 220ms cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
 @keyframes sheet-in {

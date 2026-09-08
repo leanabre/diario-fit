@@ -159,10 +159,10 @@ create or replace function public.seed_training_types()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
   insert into training_types (user_id, key, label, color, icon, sort_order) values
-    (new.id, 'yoga',    'Yoga',    '#3DDC97', 'yoga',    0),
-    (new.id, 'ludus',   'Ludus',   '#8B6BFF', 'ludus',   1),
-    (new.id, 'gym',     'Gym',     '#4A9BFF', 'gym',     2),
-    (new.id, 'running', 'Running', '#2FD8D2', 'running', 3)
+    (new.id, 'yoga',    'Yoga',    '#4ADE9C', 'yoga',    0),
+    (new.id, 'ludus',   'Ludus',   '#A78BFA', 'ludus',   1),
+    (new.id, 'gym',     'Gym',     '#60A5FA', 'gym',     2),
+    (new.id, 'running', 'Running', '#22D3EE', 'running', 3)
   on conflict (user_id, key) do nothing;
   return new;
 end;

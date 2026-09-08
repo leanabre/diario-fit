@@ -18,11 +18,11 @@ export const DEFAULT_WEEKLY_GOAL = 4;
 
 /** Escala de alimentación: anclajes en lenguaje neutro, no moral. */
 export const NUTRITION_SCALE = [
-  { value: 1, label: "Lejos de lo que quería", color: "#4A3B2A" },
-  { value: 2, label: "Flojo", color: "#7A5A2E" },
-  { value: 3, label: "Ni bien ni mal", color: "#A8802F" },
-  { value: 4, label: "Bien", color: "#D4A62A" },
-  { value: 5, label: "Muy bien", color: "#FFD24A" },
+  { value: 1, label: "Lejos de lo que quería", color: "#7C5C3C" },
+  { value: 2, label: "Flojo", color: "#A3763A" },
+  { value: 3, label: "Ni bien ni mal", color: "#C99632" },
+  { value: 4, label: "Bien", color: "#E8B72F" },
+  { value: 5, label: "Muy bien", color: "#FFD75E" },
 ] as const;
 
 export type NutritionScore = 1 | 2 | 3 | 4 | 5;
@@ -40,32 +40,61 @@ export function nutritionColor(score: number | null | undefined): string | null 
 /** Un score >= a esto sostiene la racha de alimentación. */
 export const NUTRITION_STREAK_THRESHOLD = 4;
 
-export const REST_COLOR = "#3A3660";
+export const REST_COLOR = "#4B4770";
 
 /** Semilla de tipos de entrenamiento al crear el perfil (espejo del trigger SQL). */
 export const SEED_TRAINING_TYPES = [
-  { key: "yoga", label: "Yoga", color: "#3DDC97", icon: "yoga" },
-  { key: "ludus", label: "Ludus", color: "#8B6BFF", icon: "ludus" },
-  { key: "gym", label: "Gym", color: "#4A9BFF", icon: "gym" },
-  { key: "running", label: "Running", color: "#2FD8D2", icon: "running" },
+  { key: "yoga", label: "Yoga", color: "#4ADE9C", icon: "yoga" },
+  { key: "ludus", label: "Ludus", color: "#A78BFA", icon: "ludus" },
+  { key: "gym", label: "Gym", color: "#60A5FA", icon: "gym" },
+  { key: "running", label: "Running", color: "#22D3EE", icon: "running" },
 ] as const;
 
-/** Paleta ofrecida al crear o recolorear un tipo de entrenamiento. */
+/**
+ * Paleta para los tipos de entrenamiento. Familia fría, a luminosidad pareja:
+ * así ninguna grita por encima de las otras al lado del ámbar de alimentación.
+ * Igual se puede elegir cualquier color con el selector.
+ */
 export const TRAINING_PALETTE = [
-  "#3DDC97",
-  "#8B6BFF",
-  "#4A9BFF",
-  "#2FD8D2",
-  "#FF7AB6",
-  "#7C5CFF",
-  "#5AD1A0",
-  "#6E8BFF",
+  "#4ADE9C",
+  "#34D399",
+  "#22D3EE",
+  "#38BDF8",
+  "#60A5FA",
+  "#818CF8",
+  "#A78BFA",
+  "#C084FC",
+  "#E879C7",
+  "#F472B6",
+  "#2DD4BF",
+  "#7DD3FC",
 ];
 
 /** Colores de persona para las vistas de equipo. */
-export const ACCENT_COLORS = ["#7C5CFF", "#3DDC97", "#4A9BFF", "#FF7AB6", "#2FD8D2", "#FFD24A"];
+export const ACCENT_COLORS = [
+  "#8B6BFF",
+  "#A78BFA",
+  "#60A5FA",
+  "#22D3EE",
+  "#4ADE9C",
+  "#34D399",
+  "#FFD75E",
+  "#FB923C",
+  "#F472B6",
+  "#E879C7",
+  "#F87171",
+  "#94A3B8",
+];
 
-export const PROFILE_EMOJIS = ["🙂", "🌙", "⭐️", "🔥", "🌿", "🐦", "🍋", "🫐", "🏔️", "🎧"];
+export const PROFILE_EMOJIS = [
+  "🙂", "😎", "🤓", "🥳", "😌", "🤠", "🫶", "💪",
+  "🌙", "☀️", "⭐️", "⚡️", "🔥", "❄️", "🌈", "✨",
+  "🌿", "🍀", "🌵", "🌻", "🌸", "🍄", "🪴", "🌊",
+  "🐦", "🦊", "🐺", "🦁", "🐢", "🦖", "🐙", "🦋",
+  "🍋", "🫐", "🍉", "🥑", "🍅", "🥕", "🍒", "🥥",
+  "🏔️", "🏃", "🚴", "🧘", "🏊", "⛰️", "🥊", "🏀",
+  "🎧", "🎸", "🎨", "📚", "☕️", "🧉", "🎯", "🚀",
+];
 
 /** Etiquetas del puntaje semanal. */
 export const SCORE_BANDS = [

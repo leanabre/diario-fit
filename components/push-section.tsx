@@ -53,7 +53,7 @@ export function PushSection({ reminderHour }: { reminderHour: number | null }) {
         className="flex w-full items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3.5 text-body disabled:opacity-50"
       >
         Avisarme en el teléfono
-        <span className={`h-6 w-11 rounded-full p-0.5 transition-colors ${on ? "bg-[#7C5CFF]" : "bg-line"}`}>
+        <span className={`h-6 w-11 rounded-full p-0.5 transition-colors ${on ? "bg-accent" : "bg-line"}`}>
           <span className={`block h-5 w-5 rounded-full bg-text transition-transform ${on ? "translate-x-5" : ""}`} />
         </span>
       </button>

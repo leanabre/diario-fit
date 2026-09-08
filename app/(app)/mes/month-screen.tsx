@@ -91,6 +91,7 @@ export function MonthScreen({ userId, profile, trainingTypes, initialDays, month
                 colorFor={colorFor}
                 label={dayOfMonth(date)}
                 muted={isFuture(date, today)}
+                selected={date === today}
                 ignite={date === igniteDate}
                 onClick={isFuture(date, today) ? undefined : () => setOpen(date)}
                 ariaLabel={date}
@@ -102,7 +103,7 @@ export function MonthScreen({ userId, profile, trainingTypes, initialDays, month
         </div>
       </div>
 
-      <section className="mx-5 mt-8 grid grid-cols-3 gap-3 rounded-card border border-line bg-surface p-4">
+      <section className="mx-5 mt-8 grid grid-cols-3 gap-3 card p-4">
         <Stat value={summary.average != null ? summary.average.toFixed(1).replace(".", ",") : "—"} label="Promedio" />
         <Stat value={String(summary.trainings)} label="Entrenos" />
         <Stat value={String(summary.logged)} label="Días cargados" />

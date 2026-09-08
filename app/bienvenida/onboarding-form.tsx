@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ColorPicker, EmojiPicker } from "@/components/pickers";
 import { ACCENT_COLORS, DEFAULT_WEEKLY_GOAL, PROFILE_EMOJIS } from "@/lib/config";
 import { supabaseBrowser } from "@/lib/supabase/client";
 
@@ -54,43 +55,13 @@ export function OnboardingForm({ userId, defaultName }: { userId: string; defaul
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-2xl border border-line bg-surface px-4 py-3.5 text-body outline-none focus:border-[#7C5CFF]"
+            className="w-full rounded-2xl border border-line bg-surface px-4 py-3.5 text-body outline-none focus:border-accent"
           />
         </div>
 
-        <div className="space-y-2">
-          <span className="block text-note text-text-dim">Tu emoji</span>
-          <div className="flex flex-wrap gap-2">
-            {PROFILE_EMOJIS.map((option) => (
-              <button
-                key={option}
-                type="button"
-                onClick={() => setEmoji(option)}
-                className={`h-11 w-11 rounded-full border text-body ${
-                  emoji === option ? "border-transparent bg-line" : "border-line bg-surface"
-                }`}
-              >
-                {option}
-              </button>
-            ))}
-          </div>
-        </div>
+        <EmojiPicker value={emoji} onChange={setEmoji} />
 
-        <div className="space-y-2">
-          <span className="block text-note text-text-dim">Tu color</span>
-          <div className="flex flex-wrap gap-3">
-            {ACCENT_COLORS.map((option) => (
-              <button
-                key={option}
-                type="button"
-                onClick={() => setColor(option)}
-                aria-label={option}
-                style={{ background: option }}
-                className={`h-9 w-9 rounded-full ${color === option ? "ring-2 ring-text ring-offset-2 ring-offset-bg" : ""}`}
-              />
-            ))}
-          </div>
-        </div>
+        <ColorPicker value={color} options={ACCENT_COLORS} onChange={setColor} />
 
         <div className="space-y-2">
           <span className="block text-note text-text-dim">Entrenamientos por semana</span>
@@ -113,7 +84,7 @@ export function OnboardingForm({ userId, defaultName }: { userId: string; defaul
         <button
           type="submit"
           disabled={saving}
-          className="w-full rounded-2xl bg-[#7C5CFF] px-4 py-3.5 text-body font-medium text-white disabled:opacity-50"
+          className="tap w-full rounded-2xl bg-accent px-4 py-3.5 text-body font-medium text-white disabled:opacity-50"
         >
           {saving ? "Creando…" : "Empezar"}
         </button>

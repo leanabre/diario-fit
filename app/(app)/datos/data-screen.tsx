@@ -183,7 +183,7 @@ export function DataScreen({ profile, trainingTypes, history, today }: Props) {
           )}
 
           {insight && (
-            <section className="mx-5 rounded-card border border-line bg-surface p-5">
+            <section className="mx-5 card p-5">
               <p className="text-note leading-relaxed">
                 En las semanas que entrenaste {goal} veces o más, tu promedio de alimentación fue{" "}
                 <span className="tnum text-food-5">{insight.withGoal.toFixed(1).replace(".", ",")}</span>. En las demás,{" "}

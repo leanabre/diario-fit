@@ -22,14 +22,14 @@ export default async function TeamPage() {
     return (
       <div className="flex flex-1 flex-col">
         <ScreenHeader title="Nosotros" subtitle="La semana de los dos" />
-        <section className="mx-5 rounded-card border border-line bg-surface p-5">
+        <section className="mx-5 card p-5">
           <p className="text-body">Todavía no hay equipo.</p>
           <p className="mt-2 text-note text-text-dim">
             Uno de los dos crea el equipo y le pasa el código al otro. Se hace en Ajustes.
           </p>
           <Link
             href="/ajustes#equipo"
-            className="mt-4 inline-block rounded-2xl bg-[#7C5CFF] px-4 py-3 text-note font-medium text-white"
+            className="mt-4 inline-block rounded-2xl bg-accent px-4 py-3 text-note font-medium text-white"
           >
             Ir a Ajustes
           </Link>

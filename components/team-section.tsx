@@ -26,7 +26,7 @@ export function TeamSection({ team, partner }: Props) {
         <button
           disabled={pending}
           onClick={() => run(() => createTeam("Nosotros"))}
-          className="w-full rounded-2xl bg-[#7C5CFF] px-4 py-3.5 text-body font-medium text-white disabled:opacity-50"
+          className="w-full rounded-2xl bg-accent px-4 py-3.5 text-body font-medium text-white disabled:opacity-50"
         >
           Crear equipo
         </button>
@@ -59,7 +59,7 @@ export function TeamSection({ team, partner }: Props) {
         value={name}
         onChange={(e) => setName(e.target.value)}
         onBlur={(e) => run(() => renameTeam(e.target.value))}
-        className="w-full rounded-2xl border border-line bg-surface px-4 py-3 text-body outline-none focus:border-[#7C5CFF]"
+        className="w-full rounded-2xl border border-line bg-surface px-4 py-3 text-body outline-none focus:border-accent"
       />
 
       {partner ? (

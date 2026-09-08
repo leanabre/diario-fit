@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useDeferredValue, useMemo, useRef, useState } from "react";
 import { DayStrip } from "@/components/day-strip";
 import { NutritionPicker } from "@/components/nutrition-picker";
 import { ScreenHeader } from "@/components/screen-header";
@@ -9,6 +9,7 @@ import { TrainingPicker } from "@/components/training-picker";
 import { REST_COLOR } from "@/lib/config";
 import { editableWindow, formatMonth, formatWeekday, relativeDayLabel, weekStartKey, type DateKey } from "@/lib/dates";
 import { allStreaks, weekTrainingCount } from "@/lib/streaks";
+import { evaluateAchievements } from "@/lib/achievements";
 import type { Day, Profile, TrainingType } from "@/lib/types";
 import { useDays } from "@/lib/use-days";
 
@@ -39,6 +40,20 @@ export function TodayScreen({ userId, profile, trainingTypes, initialDays, today
     [days, profile.weekly_training_goal, today],
   );
   const weekTrainings = useMemo(() => weekTrainingCount(days, weekStartKey(today)), [days, today]);
+
+  // Los logros dejan de estar escondidos: el más cercano vive en Hoy, que es la
+  // pantalla que se abre todos los días. Se calculan diferidos porque recorren
+  // todo el histórico y no tienen por qué frenar el toque.
+  const deferredDays = useDeferredValue(days);
+  const achievements = useMemo(
+    () => evaluateAchievements({ days: deferredDays, goal: profile.weekly_training_goal, today }),
+    [deferredDays, profile.weekly_training_goal, today],
+  );
+  const nextAchievement = useMemo(() => {
+    const pending = achievements.filter((a) => !a.unlocked && a.def.group !== "equipo");
+    if (pending.length === 0) return null;
+    return pending.reduce((best, a) => (a.current / a.target > best.current / best.target ? a : best));
+  }, [achievements]);
 
   const isFirstDay = days.size === 0 && day.nutritionScore == null;
 
@@ -111,8 +126,15 @@ export function TodayScreen({ userId, profile, trainingTypes, initialDays, today
         />
       </div>
 
-      <div className="mt-8">
-        <StreaksCard streaks={streaks} weekTrainings={weekTrainings} goal={profile.weekly_training_goal} />
+      <div className="mt-9 border-t border-line pt-7">
+        <StreaksCard
+          streaks={streaks}
+          weekTrainings={weekTrainings}
+          goal={profile.weekly_training_goal}
+          nextAchievement={nextAchievement}
+          unlockedCount={achievements.filter((a) => a.unlocked).length}
+          totalAchievements={achievements.length}
+        />
       </div>
 
       {error && <p className="mt-4 px-5 text-note text-food-4">{error}</p>}

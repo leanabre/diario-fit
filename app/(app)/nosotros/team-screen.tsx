@@ -41,7 +41,7 @@ export function TeamScreen({ team, me, partner, myDays, partnerDays, challenges,
     return (
       <div className="flex flex-1 flex-col">
         <ScreenHeader title={team.name} subtitle="Falta que se sume la otra persona" />
-        <section className="mx-5 rounded-card border border-line bg-surface p-5">
+        <section className="mx-5 card p-5">
           <p className="text-note text-text-dim">Tu código de invitación</p>
           <p className="mt-2 font-display text-hero tnum tracking-[0.2em]">{team.invite_code}</p>
           <p className="mt-3 text-note text-text-dim">
@@ -66,7 +66,7 @@ export function TeamScreen({ team, me, partner, myDays, partnerDays, challenges,
       </section>
 
       {current && progress && (
-        <section className="mx-5 mt-8 rounded-card border border-line bg-surface p-5">
+        <section className="mx-5 mt-8 card p-5">
           <div className="flex items-baseline justify-between gap-3">
             <div>
               <p className="text-note text-text-dim">Desafío de la semana</p>
@@ -143,13 +143,12 @@ function PersonWeek({ profile, days, weekStart }: { profile: Profile; days: Map<
   const summary = weekSummary(days, weekStart, profile.weekly_training_goal);
 
   return (
-    <div className="rounded-card border border-line bg-surface p-4">
+    <div className="card p-4">
       <p className="flex items-center gap-2 text-note">
-        <span
-          className="inline-block h-2.5 w-2.5 rounded-full"
-          style={{ background: profile.accent_color }}
-        />
-        {profile.emoji} {profile.display_name}
+        <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: profile.accent_color }} />
+        <span className="truncate">
+          {profile.emoji} {profile.display_name}
+        </span>
       </p>
       <p className="mt-3 font-display text-num tnum">{summary.score}</p>
       <p className="text-mini text-text-dim">{summary.label}</p>

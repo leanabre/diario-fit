@@ -65,7 +65,7 @@ export function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="vos@mail.com"
-            className="w-full rounded-2xl border border-line bg-surface px-4 py-3.5 text-body outline-none placeholder:text-text-dim/60 focus:border-[#7C5CFF]"
+            className="w-full rounded-2xl border border-line bg-surface px-4 py-3.5 text-body outline-none placeholder:text-text-dim/60 focus:border-accent"
           />
         </div>
 
@@ -80,14 +80,14 @@ export function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="al menos 6 caracteres"
-            className="w-full rounded-2xl border border-line bg-surface px-4 py-3.5 text-body outline-none placeholder:text-text-dim/60 focus:border-[#7C5CFF]"
+            className="w-full rounded-2xl border border-line bg-surface px-4 py-3.5 text-body outline-none placeholder:text-text-dim/60 focus:border-accent"
           />
         </div>
 
         <button
           type="submit"
           disabled={busy || !email.trim() || password.length < 6}
-          className="w-full rounded-2xl bg-[#7C5CFF] px-4 py-3.5 text-body font-medium text-white disabled:opacity-50"
+          className="tap w-full rounded-2xl bg-accent px-4 py-3.5 text-body font-medium text-white disabled:opacity-50"
         >
           {busy ? (creating ? "Creando…" : "Entrando…") : creating ? "Crear cuenta" : "Entrar"}
         </button>

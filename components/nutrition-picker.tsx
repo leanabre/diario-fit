@@ -31,6 +31,7 @@ export function NutritionPicker({ score, note, onScore, onNote }: Props) {
       <div className="mt-3 grid grid-cols-5 gap-2.5">
         {NUTRITION_SCALE.map((step) => {
           const active = score === step.value;
+
           return (
             <button
               key={step.value}
@@ -38,10 +39,12 @@ export function NutritionPicker({ score, note, onScore, onNote }: Props) {
               onClick={() => onScore(active ? null : step.value)}
               aria-label={step.label}
               aria-pressed={active}
+              // La rampa de luz va siempre entera: atenuar los no elegidos borraba
+              // justamente la escala que explica el sentido de cada número.
               style={{ background: step.color }}
-              className={`flex aspect-square w-full items-center justify-center rounded-full font-display text-body tnum transition-transform ${
-                active ? "scale-[1.07] ring-2 ring-text/85 ring-offset-2 ring-offset-bg" : ""
-              } ${step.value >= 4 ? "text-bg/60" : "text-text/70"}`}
+              className={`tap flex aspect-square w-full items-center justify-center rounded-full font-display text-body tnum ${
+                active ? "ring-2 ring-text ring-offset-2 ring-offset-bg" : ""
+              } ${step.value >= 4 ? "text-bg/60" : "text-text/75"}`}
             >
               {step.value}
             </button>
@@ -49,7 +52,13 @@ export function NutritionPicker({ score, note, onScore, onNote }: Props) {
         })}
       </div>
 
-      <p className="mt-2.5 h-5 text-note text-text-dim">{nutritionLabel(score) ?? " "}</p>
+      <p className="mt-3 h-5 text-note">
+        {score != null ? (
+          <span style={{ color: NUTRITION_SCALE[score - 1].color }}>{nutritionLabel(score)}</span>
+        ) : (
+          <span className="text-text-dim">Tocá del 1 al 5</span>
+        )}
+      </p>
 
       {open ? (
         <div className="mt-1">
@@ -60,7 +69,7 @@ export function NutritionPicker({ score, note, onScore, onNote }: Props) {
             onBlur={commit}
             rows={2}
             placeholder="Algo para acordarte del día"
-            className="w-full resize-none rounded-2xl border border-line bg-surface px-4 py-3 text-note outline-none placeholder:text-text-dim/60 focus:border-line"
+            className="w-full resize-none rounded-2xl border border-line bg-surface px-4 py-3 text-note outline-none placeholder:text-text-dim/60 focus:border-accent"
           />
           <div className="flex items-center justify-between text-mini text-text-dim">
             <button
@@ -86,7 +95,7 @@ export function NutritionPicker({ score, note, onScore, onNote }: Props) {
             setOpen(true);
             requestAnimationFrame(() => textarea.current?.focus());
           }}
-          className="mt-1 text-note text-text-dim"
+          className="tap mt-1 text-note text-text-dim"
         >
           + agregar nota
         </button>

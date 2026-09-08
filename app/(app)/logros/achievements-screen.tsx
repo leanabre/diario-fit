@@ -1,11 +1,11 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { IconBack } from "@/components/icons";
+import { ScreenHeader } from "@/components/screen-header";
 import { AchievementMedal, GROUP_COLOR } from "@/components/streaks-card";
 import { GROUP_LABELS, formatMissing, type AchievementGroup, type AchievementState } from "@/lib/achievements";
 import { withAlpha } from "@/lib/color";
+import type { Profile } from "@/lib/types";
 import { tapComplete } from "@/lib/haptics";
 import { unlockAchievements } from "./actions";
 
@@ -14,9 +14,10 @@ type Props = {
   unlockedAt: Record<string, string>;
   /** Alcanzados pero todavía sin registrar: son los que se festejan. */
   newlyUnlocked: string[];
+  profile: Profile;
 };
 
-export function AchievementsScreen({ states, unlockedAt, newlyUnlocked }: Props) {
+export function AchievementsScreen({ states, unlockedAt, newlyUnlocked, profile }: Props) {
   const [celebrating, setCelebrating] = useState<string | null>(newlyUnlocked[0] ?? null);
 
   useEffect(() => {
@@ -33,12 +34,11 @@ export function AchievementsScreen({ states, unlockedAt, newlyUnlocked }: Props)
 
   return (
     <div className="flex flex-1 flex-col pb-6">
-      <header className="safe-top flex items-center gap-1 px-3 pb-2 pt-3">
-        <Link href="/" aria-label="Volver" className="tap p-2 text-text-dim">
-          <IconBack />
-        </Link>
-        <h1 className="font-display text-head">Logros</h1>
-      </header>
+      <ScreenHeader
+        title="Logros"
+        subtitle="Lo que ya conseguiste y lo que está cerca"
+        avatar={{ emoji: profile.emoji, color: profile.accent_color }}
+      />
 
       <section className="mx-5 card p-5">
         <div className="flex items-end gap-3">

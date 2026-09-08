@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
   Bar,
@@ -65,11 +64,7 @@ export function DataScreen({ profile, trainingTypes, history, today }: Props) {
       <ScreenHeader
         title="Datos"
         subtitle={weeks.caption}
-        action={
-          <Link href="/logros" className="rounded-full px-3 py-2 text-note text-text-dim">
-            Logros
-          </Link>
-        }
+        avatar={{ emoji: profile.emoji, color: profile.accent_color }}
       />
 
       <div className="px-5">

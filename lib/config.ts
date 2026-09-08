@@ -18,10 +18,10 @@ export const DEFAULT_WEEKLY_GOAL = 4;
 
 /** Escala de alimentación: anclajes en lenguaje neutro, no moral. */
 export const NUTRITION_SCALE = [
-  { value: 1, label: "Lejos de lo que quería", color: "#7C5C3C" },
-  { value: 2, label: "Flojo", color: "#A3763A" },
-  { value: 3, label: "Ni bien ni mal", color: "#C99632" },
-  { value: 4, label: "Bien", color: "#E8B72F" },
+  { value: 1, label: "Lejos de lo que quería", color: "#7A5E3E" },
+  { value: 2, label: "Flojo", color: "#A37C39" },
+  { value: 3, label: "Ni bien ni mal", color: "#C79A33" },
+  { value: 4, label: "Bien", color: "#E6B92E" },
   { value: 5, label: "Muy bien", color: "#FFD75E" },
 ] as const;
 
@@ -40,7 +40,7 @@ export function nutritionColor(score: number | null | undefined): string | null 
 /** Un score >= a esto sostiene la racha de alimentación. */
 export const NUTRITION_STREAK_THRESHOLD = 4;
 
-export const REST_COLOR = "#4B4770";
+export const REST_COLOR = "#46445A";
 
 /** Semilla de tipos de entrenamiento al crear el perfil (espejo del trigger SQL). */
 export const SEED_TRAINING_TYPES = [

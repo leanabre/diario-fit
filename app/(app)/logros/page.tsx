@@ -44,5 +44,12 @@ export default async function AchievementsPage() {
 
   const newlyUnlocked = states.filter((s) => s.unlocked && !(s.def.key in unlockedAt)).map((s) => s.def.key);
 
-  return <AchievementsScreen states={states} unlockedAt={unlockedAt} newlyUnlocked={newlyUnlocked} />;
+  return (
+    <AchievementsScreen
+      states={states}
+      unlockedAt={unlockedAt}
+      newlyUnlocked={newlyUnlocked}
+      profile={profile}
+    />
+  );
 }

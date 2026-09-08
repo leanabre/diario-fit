@@ -2,6 +2,7 @@
 
 import { useDeferredValue, useMemo, useRef, useState } from "react";
 import { DayStrip } from "@/components/day-strip";
+import { IconCheck } from "@/components/icons";
 import { NutritionPicker } from "@/components/nutrition-picker";
 import { ScreenHeader } from "@/components/screen-header";
 import { StreaksCard } from "@/components/streaks-card";
@@ -10,7 +11,7 @@ import { REST_COLOR } from "@/lib/config";
 import { editableWindow, formatMonth, formatWeekday, relativeDayLabel, weekStartKey, type DateKey } from "@/lib/dates";
 import { allStreaks, weekTrainingCount } from "@/lib/streaks";
 import { evaluateAchievements } from "@/lib/achievements";
-import type { Day, Profile, TrainingType } from "@/lib/types";
+import { isLogged, type Day, type Profile, type TrainingType } from "@/lib/types";
 import { useDays } from "@/lib/use-days";
 
 type Props = {
@@ -94,8 +95,20 @@ export function TodayScreen({ userId, profile, trainingTypes, initialDays, today
   return (
     <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd} className="flex flex-1 flex-col">
       <ScreenHeader
+        size="num"
         title={formatWeekday(selected)}
         subtitle={selected === today ? formatMonth(selected) : `${formatMonth(selected)} · ${relativeDayLabel(selected, today)}`}
+        avatar={{ emoji: profile.emoji, color: profile.accent_color }}
+        action={
+          // Cerrar el día tiene que sentirse cerrado: sin esto no había ninguna
+          // señal de que ya estaba listo.
+          isLogged(day) ? (
+            <span className="flex items-center gap-1 rounded-full border border-good/30 bg-good/10 px-2.5 py-1 text-mini text-good">
+              <IconCheck className="h-3.5 w-3.5" />
+              cargado
+            </span>
+          ) : null
+        }
       />
 
       <DayStrip

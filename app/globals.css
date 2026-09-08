@@ -1,32 +1,36 @@
 @import "tailwindcss";
 
 @theme {
-  /* Superficies: índigo más profundo que antes, para que todo lo que va encima
-     gane contraste. Tres niveles en lugar de dos, así las tarjetas se despegan. */
-  --color-bg: #0f0e1c;
-  --color-surface: #191730;
-  --color-raised: #232041;
-  --color-line: #302c52;
-  --color-text: #f2efff;
-  --color-text-dim: #9d97c2;
+  /*
+    Base casi neutra con un susurro de índigo. Antes el violeta teñía todo —
+    fondo, tarjetas, bordes y hasta el texto secundario— y eso hacía que los
+    colores de los datos se vieran turbios y que la app leyera "temática
+    violeta" en vez de diseñada. Ahora el color está reservado para el dato.
+  */
+  --color-bg: #0c0b13;
+  --color-surface: #16151f;
+  --color-raised: #201e2b;
+  --color-line: #2a2837;
+  --color-text: #f4f3f8;
+  --color-text-dim: #9694a6;
 
-  /* Alimentación: un solo ámbar que gana luz del 1 al 5. Los dos primeros pasos
-     ya no son marrón barroso: se leen contra el fondo sin ensuciar. */
-  --color-food-1: #7c5c3c;
-  --color-food-2: #a3763a;
-  --color-food-3: #c99632;
-  --color-food-4: #e8b72f;
+  /* Alimentación: un solo ámbar que gana luz del 1 al 5. */
+  --color-food-1: #7a5e3e;
+  --color-food-2: #a37c39;
+  --color-food-3: #c79a33;
+  --color-food-4: #e6b92e;
   --color-food-5: #ffd75e;
 
-  /* Entrenamiento: familia fría, todas a una luminosidad parecida para que
-     ninguna grite por encima de las otras al lado del ámbar. */
-  --color-yoga: #4ade9c;
-  --color-ludus: #a78bfa;
-  --color-gym: #60a5fa;
-  --color-running: #22d3ee;
-  --color-rest: #4b4770;
+  /* Entrenamiento: familia fría, pareja en luminosidad, para que ninguna grite
+     por encima de las otras al lado del ámbar. */
+  --color-yoga: #3fd69b;
+  --color-ludus: #9b87fc;
+  --color-gym: #4c9af5;
+  --color-running: #2bc9de;
+  --color-rest: #46445a;
 
   --color-accent: #8b6bff;
+  --color-good: #3fd69b;
 
   --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-instrument), ui-sans-serif, system-ui, sans-serif;

@@ -73,6 +73,7 @@ export function MonthScreen({ userId, profile, trainingTypes, initialDays, month
             )}
           </div>
         }
+        avatar={{ emoji: profile.emoji, color: profile.accent_color }}
       />
 
       <div className="px-5">
@@ -103,7 +104,19 @@ export function MonthScreen({ userId, profile, trainingTypes, initialDays, month
         </div>
       </div>
 
-      <section className="mx-5 mt-8 grid grid-cols-3 gap-3 card p-4">
+      {/* Sin esto hay que deducir qué mitad es cuál. Una línea de 13 px lo resuelve. */}
+      <p className="mt-4 flex items-center justify-center gap-4 px-5 text-mini text-text-dim">
+        <span className="flex items-center gap-1.5">
+          <span className="h-3 w-3 rounded-[3px] bg-food-4" />
+          cómo comiste
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="h-3 w-3 rounded-[3px] bg-gym" />
+          si entrenaste
+        </span>
+      </p>
+
+      <section className="mx-5 mt-6 grid grid-cols-3 gap-3 card p-4">
         <Stat value={summary.average != null ? summary.average.toFixed(1).replace(".", ",") : "—"} label="Promedio" />
         <Stat value={String(summary.trainings)} label="Entrenos" />
         <Stat value={String(summary.logged)} label="Días cargados" />

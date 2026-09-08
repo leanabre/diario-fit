@@ -40,7 +40,11 @@ export function TeamScreen({ team, me, partner, myDays, partnerDays, challenges,
   if (!partner) {
     return (
       <div className="flex flex-1 flex-col">
-        <ScreenHeader title={team.name} subtitle="Falta que se sume la otra persona" />
+        <ScreenHeader
+          title={team.name}
+          subtitle="Falta que se sume la otra persona"
+          avatar={{ emoji: me.emoji, color: me.accent_color }}
+        />
         <section className="mx-5 card p-5">
           <p className="text-note text-text-dim">Tu código de invitación</p>
           <p className="mt-2 font-display text-hero tnum tracking-[0.2em]">{team.invite_code}</p>
@@ -54,13 +58,21 @@ export function TeamScreen({ team, me, partner, myDays, partnerDays, challenges,
 
   return (
     <div className="flex flex-1 flex-col">
-      <ScreenHeader title={team.name} subtitle={`${me.display_name} y ${partner.display_name}`} />
+      <ScreenHeader
+        title={team.name}
+        subtitle={`${me.display_name} y ${partner.display_name}`}
+        avatar={{ emoji: me.emoji, color: me.accent_color }}
+      />
 
-      <section className="px-5">
+      <section className="mx-5 card p-5">
         <div className="flex items-baseline gap-3">
-          <span className="font-display text-hero tnum">{streak}</span>
+          <span className="font-display text-hero tnum leading-none">{streak}</span>
           <span className="text-note text-text-dim">
-            {streak === 0 ? "sin racha conjunta todavía" : streak === 1 ? "día cargando los dos" : "días seguidos cargando los dos"}
+            {streak === 0
+              ? "sin racha conjunta todavía"
+              : streak === 1
+                ? "día cargando los dos"
+                : "días seguidos cargando los dos"}
           </span>
         </div>
       </section>
@@ -144,11 +156,16 @@ function PersonWeek({ profile, days, weekStart }: { profile: Profile; days: Map<
 
   return (
     <div className="card p-4">
+      {/* Mismo lenguaje que el avatar del header: emoji dentro de un aro del
+          color de cada uno. */}
       <p className="flex items-center gap-2 text-note">
-        <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: profile.accent_color }} />
-        <span className="truncate">
-          {profile.emoji} {profile.display_name}
+        <span
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border text-[14px] leading-none"
+          style={{ borderColor: profile.accent_color }}
+        >
+          {profile.emoji}
         </span>
+        <span className="truncate">{profile.display_name}</span>
       </p>
       <p className="mt-3 font-display text-num tnum">{summary.score}</p>
       <p className="text-mini text-text-dim">{summary.label}</p>

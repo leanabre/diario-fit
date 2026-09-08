@@ -39,12 +39,20 @@ export function IconTeam({ className = base }: IconProps) {
   );
 }
 
-export function IconSettings({ className = "h-[22px] w-[22px]" }: IconProps) {
+export function IconMedal({ className = base }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
-      <path d="M4 8h16M4 16h16" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      <circle cx="9.5" cy="8" r="2.6" fill="var(--color-bg)" stroke="currentColor" strokeWidth="1.7" />
-      <circle cx="15" cy="16" r="2.6" fill="var(--color-bg)" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="12" cy="8.8" r="5.6" stroke="currentColor" strokeWidth="1.7" />
+      {/* La estrella es lo que lo vuelve medalla: sin ella el círculo con cintas
+          se lee como una cerradura a 22 px. */}
+      <path d="M12 6.1l.86 1.74 1.92.28-1.39 1.35.33 1.91L12 10.48l-1.72.9.33-1.91L9.22 8.12l1.92-.28L12 6.1Z" fill="currentColor" />
+      <path
+        d="M8.4 13.4 6.6 21l5.4-2.7 5.4 2.7-1.8-7.6"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   );
 }
@@ -58,6 +66,14 @@ export function IconShield({ className = "h-4 w-4" }: IconProps) {
         strokeWidth="1.7"
         strokeLinejoin="round"
       />
+    </svg>
+  );
+}
+
+export function IconCheck({ className = "h-4 w-4" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className} aria-hidden>
+      <path d="m5.5 12.5 4 4 9-9" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

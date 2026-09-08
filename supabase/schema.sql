@@ -162,7 +162,8 @@ begin
     (new.id, 'yoga',    'Yoga',    '#4ADE9C', 'yoga',    0),
     (new.id, 'ludus',   'Ludus',   '#A78BFA', 'ludus',   1),
     (new.id, 'gym',     'Gym',     '#60A5FA', 'gym',     2),
-    (new.id, 'running', 'Running', '#22D3EE', 'running', 3)
+    (new.id, 'running',  'Running',  '#22D3EE', 'running',  3),
+    (new.id, 'caminata', 'Caminata', '#E879C7', 'caminata', 4)
   on conflict (user_id, key) do nothing;
   return new;
 end;

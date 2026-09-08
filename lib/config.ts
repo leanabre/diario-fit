@@ -48,6 +48,7 @@ export const SEED_TRAINING_TYPES = [
   { key: "ludus", label: "Ludus", color: "#A78BFA", icon: "ludus" },
   { key: "gym", label: "Gym", color: "#60A5FA", icon: "gym" },
   { key: "running", label: "Running", color: "#22D3EE", icon: "running" },
+  { key: "caminata", label: "Caminata", color: "#E879C7", icon: "caminata" },
 ] as const;
 
 /**

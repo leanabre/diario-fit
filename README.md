@@ -12,7 +12,7 @@ South America (São Paulo).
 
 **2. Cargar el esquema.** SQL Editor → New query → pegar `supabase/schema.sql` entero y
 correrlo. Crea las tablas, las policies de RLS, la vista `day_entries_shared`, las
-funciones de equipo y el trigger que siembra Yoga, Ludus, Gym y Running al crear un perfil.
+funciones de equipo y el trigger que siembra Yoga, Ludus, Gym, Running y Caminata al crear un perfil.
 Es idempotente: se puede volver a correr sin romper nada.
 
 **3. Variables de entorno.**

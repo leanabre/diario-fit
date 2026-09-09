@@ -2,6 +2,7 @@
 
 import { useDeferredValue, useMemo, useRef, useState } from "react";
 import { DayStrip } from "@/components/day-strip";
+import { MealsSection } from "@/components/meals-section";
 import { IconCheck } from "@/components/icons";
 import { NutritionPicker } from "@/components/nutrition-picker";
 import { ScreenHeader } from "@/components/screen-header";
@@ -129,6 +130,8 @@ export function TodayScreen({ userId, profile, trainingTypes, initialDays, today
           onScore={(score) => update(selected, { nutritionScore: score })}
           onNote={(note) => update(selected, { nutritionNote: note || null })}
         />
+
+        <MealsSection userId={userId} date={selected} editable />
 
         <TrainingPicker
           types={trainingTypes.filter((t) => t.is_active || day.trainingTypeIds.includes(t.id))}

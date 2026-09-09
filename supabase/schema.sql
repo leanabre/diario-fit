@@ -101,6 +101,23 @@ alter table training_types
   add column if not exists tracks_distance boolean not null default false;
 
 -- ─────────────────────────────────────────────────────────────
+-- Registro de comidas: foto y comentario sueltos a lo largo del día
+-- ─────────────────────────────────────────────────────────────
+
+create table if not exists meals (
+  id         uuid primary key default gen_random_uuid(),
+  user_id    uuid references profiles(id) on delete cascade,
+  date       date not null,
+  moment     text not null default 'otro'
+             check (moment in ('desayuno', 'almuerzo', 'merienda', 'cena', 'otro')),
+  note       text check (char_length(note) <= 280),
+  photo_path text,
+  created_at timestamptz default now()
+);
+
+create index if not exists meals_user_date on meals (user_id, date desc, created_at);
+
+-- ─────────────────────────────────────────────────────────────
 -- Funciones auxiliares
 -- ─────────────────────────────────────────────────────────────
 
@@ -278,6 +295,7 @@ alter table day_entries     enable row level security;
 alter table entry_trainings enable row level security;
 alter table achievements    enable row level security;
 alter table team_challenges enable row level security;
+alter table meals           enable row level security;
 
 drop policy if exists profiles_select on profiles;
 create policy profiles_select on profiles for select
@@ -349,6 +367,22 @@ drop policy if exists achievements_write on achievements;
 create policy achievements_write on achievements for all
   using (user_id = auth.uid()) with check (user_id = auth.uid());
 
+-- Las comidas siguen la misma regla que la nota del día: privadas salvo que la
+-- persona tenga share_notes prendido.
+drop policy if exists meals_select on meals;
+create policy meals_select on meals for select
+  using (
+    user_id = auth.uid()
+    or (
+      public.is_teammate(user_id)
+      and exists (select 1 from profiles p where p.id = meals.user_id and p.share_notes)
+    )
+  );
+
+drop policy if exists meals_write on meals;
+create policy meals_write on meals for all
+  using (user_id = auth.uid()) with check (user_id = auth.uid());
+
 drop policy if exists team_challenges_select on team_challenges;
 create policy team_challenges_select on team_challenges for select
   using (team_id = public.my_team_id());
@@ -381,3 +415,35 @@ create policy push_subscriptions_write on push_subscriptions for all
 -- Historial de desafíos: hace falta poder mirar los de semanas pasadas del equipo,
 -- ya cubierto por team_challenges_select.
 create index if not exists team_challenges_team_week on team_challenges (team_id, week_start desc);
+
+-- ─────────────────────────────────────────────────────────────
+-- Storage de las fotos de comida
+-- Bucket privado: se lee con URLs firmadas, no queda nada público.
+-- Las fotos viven en <user_id>/<meal_id>.jpg
+-- ─────────────────────────────────────────────────────────────
+
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('comidas', 'comidas', false, 3145728, array['image/jpeg', 'image/png', 'image/webp'])
+on conflict (id) do update
+  set file_size_limit = excluded.file_size_limit,
+      allowed_mime_types = excluded.allowed_mime_types;
+
+drop policy if exists comidas_select on storage.objects;
+create policy comidas_select on storage.objects for select
+  using (
+    bucket_id = 'comidas'
+    and (
+      (storage.foldername(name))[1] = auth.uid()::text
+      or exists (
+        select 1 from profiles p
+        where p.id::text = (storage.foldername(name))[1]
+          and p.share_notes
+          and public.is_teammate(p.id)
+      )
+    )
+  );
+
+drop policy if exists comidas_write on storage.objects;
+create policy comidas_write on storage.objects for all
+  using (bucket_id = 'comidas' and (storage.foldername(name))[1] = auth.uid()::text)
+  with check (bucket_id = 'comidas' and (storage.foldername(name))[1] = auth.uid()::text);

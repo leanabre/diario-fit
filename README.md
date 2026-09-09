@@ -112,8 +112,25 @@ supabase/schema.sql tablas, RLS y funciones
 Las rachas, el puntaje y los logros se recalculan siempre del histórico, nunca de forma
 incremental: por eso editar un día viejo corrige todo solo.
 
+## Registro de comidas
+
+Aparte del puntaje del 1 al 5, cada día admite fotos y comentarios sueltos de lo que se
+come. Es una capa opcional: no toca rachas, puntaje ni logros, y un día sin ninguna foto
+está igual de cargado.
+
+Las fotos **se comprimen en el teléfono antes de subir** (máximo 1280 px, calidad 0,75).
+Sin eso una comida pesa 3 o 4 MB y el gigabyte gratis de Supabase se llena en un mes y
+medio; comprimidas rondan los 200 KB y alcanzan para años.
+
+Viven en el bucket privado `comidas`, en `<user_id>/<meal_id>.jpg`, y se leen con URLs
+firmadas que vencen a la hora. Siguen la misma regla de privacidad que la nota del día:
+sólo las ve la otra persona si tenés prendido *Compartir el detalle de la comida* en
+Ajustes.
+
 ## Diferencias con el spec
 
+- Hay **fotos y comentarios de comida**, que el spec descartaba explícitamente. Se
+  agregaron a pedido, cuidando que el puntaje del 1 al 5 siga siendo lo que define el día.
 - El ingreso es con **mail y contraseña**, no con el magic link que pedía el spec. La
   razón está arriba, en el paso 4.
 - El spec dice **18 logros** y después lista **19**. Están implementados los 19 de la lista.

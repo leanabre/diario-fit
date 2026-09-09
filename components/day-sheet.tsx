@@ -4,10 +4,12 @@ import { useEffect } from "react";
 import { REST_COLOR, nutritionColor, nutritionLabel } from "@/lib/config";
 import { formatShort, isEditable, type DateKey } from "@/lib/dates";
 import type { Day, TrainingType } from "@/lib/types";
+import { MealsSection } from "./meals-section";
 import { NutritionPicker } from "./nutrition-picker";
 import { TrainingPicker } from "./training-picker";
 
 type Props = {
+  userId: string;
   date: DateKey;
   day: Day;
   today: DateKey;
@@ -17,7 +19,7 @@ type Props = {
 };
 
 /** Hoja inferior del calendario: editable dentro de la ventana, sólo lectura afuera. */
-export function DaySheet({ date, day, today, trainingTypes, onUpdate, onClose }: Props) {
+export function DaySheet({ userId, date, day, today, trainingTypes, onUpdate, onClose }: Props) {
   const editable = isEditable(date, today);
 
   useEffect(() => {
@@ -50,6 +52,7 @@ export function DaySheet({ date, day, today, trainingTypes, onUpdate, onClose }:
               onScore={(nutritionScore) => onUpdate({ nutritionScore })}
               onNote={(note) => onUpdate({ nutritionNote: note || null })}
             />
+            <MealsSection userId={userId} date={date} editable />
             <TrainingPicker
               types={trainingTypes.filter((t) => t.is_active || day.trainingTypeIds.includes(t.id))}
               selected={day.trainingTypeIds}
@@ -70,7 +73,12 @@ export function DaySheet({ date, day, today, trainingTypes, onUpdate, onClose }:
             />
           </div>
         ) : (
-          <ReadOnlyDay day={day} trainingTypes={trainingTypes} />
+          <>
+            <ReadOnlyDay day={day} trainingTypes={trainingTypes} />
+            <div className="px-0 pb-8">
+              <MealsSection userId={userId} date={date} editable={false} />
+            </div>
+          </>
         )}
       </div>
     </div>

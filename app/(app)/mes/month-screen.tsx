@@ -126,6 +126,7 @@ export function MonthScreen({ userId, profile, trainingTypes, initialDays, month
 
       {open && (
         <DaySheet
+          userId={userId}
           date={open}
           day={dayAt(open)}
           today={today}

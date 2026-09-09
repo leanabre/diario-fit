@@ -204,8 +204,11 @@ export function SettingsScreen({ profile, trainingTypes, team, partner }: Props)
           </div>
         </Section>
 
-        <Section title="Compartir notas" hint="Lo demás siempre se ve entre los dos.">
-          <Toggle on={me.share_notes} onChange={(share_notes) => patchProfile({ share_notes })} label="Que vea mis notas" />
+        <Section
+          title="Compartir el detalle de la comida"
+          hint="La nota del día y las fotos de las comidas. El puntaje del 1 al 5 siempre se ve."
+        >
+          <Toggle on={me.share_notes} onChange={(share_notes) => patchProfile({ share_notes })} label="Que vea mis notas y fotos" />
         </Section>
 
         <Section title="Vincular pareja" hint="Un equipo de dos: cada uno con sus metas y sus rachas.">

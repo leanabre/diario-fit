@@ -20,6 +20,8 @@ export type TrainingType = {
   icon: string;
   sort_order: number;
   is_active: boolean;
+  /** Si el tipo pregunta por kilómetros al cargarlo. */
+  tracks_distance: boolean;
 };
 
 export type DayEntryRow = {
@@ -39,6 +41,8 @@ export type Day = {
   nutritionNote: string | null;
   restDay: boolean;
   trainingTypeIds: string[];
+  /** Kilómetros por tipo, para los que miden distancia. */
+  distances: Record<string, number | null>;
 };
 
 export function emptyDay(date: DateKey): Day {
@@ -49,6 +53,7 @@ export function emptyDay(date: DateKey): Day {
     nutritionNote: null,
     restDay: false,
     trainingTypeIds: [],
+    distances: {},
   };
 }
 

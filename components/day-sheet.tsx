@@ -54,6 +54,7 @@ export function DaySheet({ date, day, today, trainingTypes, onUpdate, onClose }:
               types={trainingTypes.filter((t) => t.is_active || day.trainingTypeIds.includes(t.id))}
               selected={day.trainingTypeIds}
               restDay={day.restDay}
+              distances={day.distances}
               onToggleType={(id) =>
                 onUpdate({
                   restDay: false,
@@ -65,6 +66,7 @@ export function DaySheet({ date, day, today, trainingTypes, onUpdate, onClose }:
               onToggleRest={() =>
                 onUpdate(day.restDay ? { restDay: false } : { restDay: true, trainingTypeIds: [] })
               }
+              onDistance={(id, km) => onUpdate({ distances: { ...day.distances, [id]: km } })}
             />
           </div>
         ) : (
@@ -78,10 +80,11 @@ export function DaySheet({ date, day, today, trainingTypes, onUpdate, onClose }:
 function ReadOnlyDay({ day, trainingTypes }: { day: Day; trainingTypes: TrainingType[] }) {
   const label = nutritionLabel(day.nutritionScore);
   const trainings = day.restDay
-    ? [{ id: "rest", label: "Descanso", color: REST_COLOR }]
+    ? [{ id: "rest", label: "Descanso", color: REST_COLOR, km: null }]
     : day.trainingTypeIds
         .map((id) => trainingTypes.find((t) => t.id === id))
-        .filter((t): t is TrainingType => Boolean(t));
+        .filter((t): t is TrainingType => Boolean(t))
+        .map((t) => ({ id: t.id, label: t.label, color: t.color, km: day.distances[t.id] ?? null }));
 
   return (
     <div className="space-y-6 px-5 pb-9">
@@ -108,9 +111,10 @@ function ReadOnlyDay({ day, trainingTypes }: { day: Day; trainingTypes: Training
               <span
                 key={t.id}
                 className="rounded-full px-3 py-1.5 text-note"
-                style={{ background: t.color, color: "#151329" }}
+                style={{ background: t.color, color: "#0C0B13" }}
               >
                 {t.label}
+                {t.km != null && <span className="tnum"> · {String(t.km).replace(".", ",")} km</span>}
               </span>
             ))}
           </div>

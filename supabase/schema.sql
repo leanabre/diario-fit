@@ -89,6 +89,18 @@ create table if not exists team_challenges (
 );
 
 -- ─────────────────────────────────────────────────────────────
+-- Columnas agregadas después de la primera versión
+-- ─────────────────────────────────────────────────────────────
+
+-- Distancia por entrenamiento, para los tipos que la miden.
+alter table entry_trainings
+  add column if not exists distance_km numeric(5, 2) check (distance_km >= 0);
+
+-- Qué tipos preguntan por kilómetros. Se elige por tipo desde Ajustes.
+alter table training_types
+  add column if not exists tracks_distance boolean not null default false;
+
+-- ─────────────────────────────────────────────────────────────
 -- Funciones auxiliares
 -- ─────────────────────────────────────────────────────────────
 
@@ -158,12 +170,12 @@ create trigger day_entries_touch
 create or replace function public.seed_training_types()
 returns trigger language plpgsql security definer set search_path = public as $$
 begin
-  insert into training_types (user_id, key, label, color, icon, sort_order) values
-    (new.id, 'yoga',    'Yoga',    '#4ADE9C', 'yoga',    0),
-    (new.id, 'ludus',   'Ludus',   '#A78BFA', 'ludus',   1),
-    (new.id, 'gym',     'Gym',     '#60A5FA', 'gym',     2),
-    (new.id, 'running',  'Running',  '#22D3EE', 'running',  3),
-    (new.id, 'caminata', 'Caminata', '#E879C7', 'caminata', 4)
+  insert into training_types (user_id, key, label, color, icon, sort_order, tracks_distance) values
+    (new.id, 'yoga',     'Yoga',     '#4ADE9C', 'yoga',     0, false),
+    (new.id, 'ludus',    'Ludus',    '#A78BFA', 'ludus',    1, false),
+    (new.id, 'gym',      'Gym',      '#60A5FA', 'gym',      2, false),
+    (new.id, 'running',  'Running',  '#22D3EE', 'running',  3, true),
+    (new.id, 'caminata', 'Caminata', '#E879C7', 'caminata', 4, true)
   on conflict (user_id, key) do nothing;
   return new;
 end;

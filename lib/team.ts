@@ -45,12 +45,12 @@ export async function getSharedDays(userId: string, from: DateKey, to: DateKey):
 
   const { data: trainings } = await supabase
     .from("entry_trainings")
-    .select("entry_id,training_type_id")
+    .select("entry_id,training_type_id,distance_km")
     .in("entry_id", rows.map((r) => r.id));
 
-  const byEntry = new Map<string, string[]>();
-  for (const t of (trainings ?? []) as { entry_id: string; training_type_id: string }[]) {
-    byEntry.set(t.entry_id, [...(byEntry.get(t.entry_id) ?? []), t.training_type_id]);
+  const byEntry = new Map<string, { training_type_id: string; distance_km: number | null }[]>();
+  for (const t of (trainings ?? []) as { entry_id: string; training_type_id: string; distance_km: number | null }[]) {
+    byEntry.set(t.entry_id, [...(byEntry.get(t.entry_id) ?? []), t]);
   }
 
   return rows.map((row) => ({
@@ -59,7 +59,8 @@ export async function getSharedDays(userId: string, from: DateKey, to: DateKey):
     nutritionScore: row.nutrition_score,
     nutritionNote: row.nutrition_note,
     restDay: row.rest_day,
-    trainingTypeIds: byEntry.get(row.id) ?? [],
+    trainingTypeIds: (byEntry.get(row.id) ?? []).map((t) => t.training_type_id),
+    distances: Object.fromEntries((byEntry.get(row.id) ?? []).map((t) => [t.training_type_id, t.distance_km])),
   }));
 }
 

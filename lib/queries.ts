@@ -9,10 +9,11 @@ type EntryRow = {
   nutrition_score: number | null;
   nutrition_note: string | null;
   rest_day: boolean;
-  entry_trainings: { training_type_id: string }[] | null;
+  entry_trainings: { training_type_id: string; distance_km: number | null }[] | null;
 };
 
-const ENTRY_SELECT = "id,date,nutrition_score,nutrition_note,rest_day,entry_trainings(training_type_id)";
+const ENTRY_SELECT =
+  "id,date,nutrition_score,nutrition_note,rest_day,entry_trainings(training_type_id,distance_km)";
 
 function toDay(row: EntryRow): Day {
   return {
@@ -22,6 +23,7 @@ function toDay(row: EntryRow): Day {
     nutritionNote: row.nutrition_note,
     restDay: row.rest_day,
     trainingTypeIds: (row.entry_trainings ?? []).map((t) => t.training_type_id),
+    distances: Object.fromEntries((row.entry_trainings ?? []).map((t) => [t.training_type_id, t.distance_km])),
   };
 }
 

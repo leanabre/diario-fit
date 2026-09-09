@@ -20,6 +20,7 @@ import {
   PERIODS,
   bestWeek,
   crossedInsight,
+  totalDistance,
   trainingDistribution,
   weeklySeries,
   type PeriodKey,
@@ -47,6 +48,7 @@ export function DataScreen({ profile, trainingTypes, history, today }: Props) {
     () => trainingDistribution(days, trainingTypes, weeks.weeks, today),
     [days, trainingTypes, weeks.weeks, today],
   );
+  const kilometers = useMemo(() => totalDistance(days, weeks.weeks, today), [days, weeks.weeks, today]);
   const best = useMemo(() => bestWeek(days, goal), [days, goal]);
   const insight = useMemo(() => crossedInsight(days, goal), [days, goal]);
 
@@ -163,6 +165,16 @@ export function DataScreen({ profile, trainingTypes, history, today }: Props) {
                 </ResponsiveContainer>
               </div>
             </Card>
+          )}
+
+          {kilometers > 0 && (
+            <section className="px-5">
+              <p className="text-note text-text-dim">Kilómetros</p>
+              <p className="mt-1 flex items-baseline gap-2">
+                <span className="font-display text-num tnum">{String(kilometers).replace(".", ",")}</span>
+                <span className="text-note text-text-dim">caminando y corriendo</span>
+              </p>
+            </section>
           )}
 
           {best && (

@@ -134,8 +134,10 @@ export function TodayScreen({ userId, profile, trainingTypes, initialDays, today
           types={trainingTypes.filter((t) => t.is_active || day.trainingTypeIds.includes(t.id))}
           selected={day.trainingTypeIds}
           restDay={day.restDay}
+          distances={day.distances}
           onToggleType={toggleType}
           onToggleRest={toggleRest}
+          onDistance={(id, km) => update(selected, { distances: { ...day.distances, [id]: km } })}
         />
       </div>
 

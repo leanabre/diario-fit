@@ -120,5 +120,13 @@ export function allStreaks(days: DayMap, goal: number, today: DateKey = todayKey
 }
 
 function blank(): Day {
-  return { date: "", entryId: null, nutritionScore: null, nutritionNote: null, restDay: false, trainingTypeIds: [] };
+  return {
+    date: "",
+    entryId: null,
+    nutritionScore: null,
+    nutritionNote: null,
+    restDay: false,
+    trainingTypeIds: [],
+    distances: {},
+  };
 }

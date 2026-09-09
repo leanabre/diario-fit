@@ -120,7 +120,7 @@ export function SettingsScreen({ profile, trainingTypes, team, partner }: Props)
                       círculos cada uno tapaban toda la pantalla. */}
                   <button
                     onClick={() => setOpenColor((id) => (id === type.id ? null : type.id))}
-                    aria-label={`Color de ${type.label}`}
+                    aria-label={`Opciones de ${type.label}`}
                     className="tap h-6 w-6 shrink-0 rounded-full ring-1 ring-inset ring-white/15"
                     style={{ background: type.color }}
                   />
@@ -143,13 +143,30 @@ export function SettingsScreen({ profile, trainingTypes, team, partner }: Props)
                 </div>
 
                 {openColor === type.id && (
-                  <div className="fade-up mt-3 border-t border-line pt-3">
+                  <div className="fade-up mt-3 space-y-3 border-t border-line pt-3">
                     <ColorPicker
                       value={type.color}
                       options={TRAINING_PALETTE}
                       small
                       onChange={(color) => patchType(type.id, { color })}
                     />
+                    <button
+                      onClick={() => patchType(type.id, { tracks_distance: !type.tracks_distance })}
+                      role="switch"
+                      aria-checked={type.tracks_distance}
+                      className="tap flex w-full items-center justify-between text-note"
+                    >
+                      <span className="text-text-dim">Preguntar kilómetros</span>
+                      <span
+                        className={`h-5 w-9 rounded-full p-0.5 ${type.tracks_distance ? "bg-accent" : "bg-line"}`}
+                      >
+                        <span
+                          className={`block h-4 w-4 rounded-full bg-text transition-transform ${
+                            type.tracks_distance ? "translate-x-4" : ""
+                          }`}
+                        />
+                      </span>
+                    </button>
                   </div>
                 )}
               </div>

@@ -95,3 +95,15 @@ export function crossedInsight(days: DayMap, goal: number, minWeeks = 8, minDiff
   if (Math.abs(difference) < minDifference) return null;
   return { withGoal, without, difference };
 }
+
+/** Kilómetros sumados en el período, para los tipos que miden distancia. */
+export function totalDistance(days: DayMap, weeks: number, today: DateKey): number {
+  const from = shiftKey(weekStartKey(today), -7 * (weeks - 1));
+  let total = 0;
+
+  for (const [date, day] of days) {
+    if (date < from) continue;
+    for (const km of Object.values(day.distances)) total += km ?? 0;
+  }
+  return Math.round(total * 10) / 10;
+}

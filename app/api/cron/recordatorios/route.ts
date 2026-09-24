@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import webpush from "web-push";
 import { formatWeekday, todayKey } from "@/lib/dates";
 import { TIMEZONE } from "@/lib/config";
-import { supabaseAdmin } from "@/lib/supabase/admin";
+import { pingSupabase, supabaseAdmin } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 
@@ -19,8 +19,9 @@ function currentHourInBA(): number {
 }
 
 /**
- * Corre cada hora (ver vercel.json). Manda el recordatorio a quien lo tenga
- * configurado a esta hora y todavía no cargó el día. Copy plano, sin culpa.
+ * Corre una vez por día (ver vercel.json; el plan Hobby no admite más seguido).
+ * Manda el recordatorio a quien lo tenga configurado a esta hora y todavía no
+ * cargó el día. Copy plano, sin culpa.
  */
 export async function GET(request: NextRequest) {
   const secret = process.env.CRON_SECRET;
@@ -29,13 +30,18 @@ export async function GET(request: NextRequest) {
     if (header !== `Bearer ${secret}`) return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
 
+  // Antes que nada, el toque a la base. Va primero a propósito: si esto quedara
+  // después del corte de abajo, el cron no tocaría Supabase nunca mientras las
+  // claves de push no estén puestas, y el proyecto se pausaría por inactividad.
+  const alive = await pingSupabase();
+
   const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   const privateKey = process.env.VAPID_PRIVATE_KEY;
   const contact = process.env.VAPID_SUBJECT ?? "mailto:hola@diariofit.app";
   const supabase = supabaseAdmin();
 
   if (!publicKey || !privateKey || !supabase) {
-    return NextResponse.json({ skipped: "faltan las claves VAPID o el service role" });
+    return NextResponse.json({ ping: alive, skipped: "faltan las claves VAPID o el service role" });
   }
 
   webpush.setVapidDetails(contact, publicKey, privateKey);
